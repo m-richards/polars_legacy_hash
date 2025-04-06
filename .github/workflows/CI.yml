@@ -31,18 +31,22 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Set up Rust
         run: rustup show
       - uses: mozilla-actions/sccache-action@v0.0.3
-      - run: source venv/bin/activate && maturin develop
+      - run: uv sync
+      - run: uv run maturin develop
         working-directory: polars_legacy_hash
-      - run: venv/bin/python -m pytest tests
+      - run: uv run python -m pytest tests
         working-directory: polars_legacy_hash
-      - run: venv/bin/python -m mypy polars_legacy_hash
+      - run: uv run python -m mypy polars_legacy_hash
         working-directory: polars_legacy_hash
-      - run: venv/bin/python -m ruff check --diff .
+      - run: uv run python -m ruff check --diff .
         working-directory: polars_legacy_hash
-      - run: venv/bin/python -m ruff format --check --diff
+      - run: uv run python -m ruff format --check --diff
         working-directory: polars_legacy_hash
 
 

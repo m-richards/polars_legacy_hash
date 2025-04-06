@@ -40,6 +40,7 @@ polars-hash = { workspace = true }
 
 [dependency-groups]
 dev = [
+    "maturin>=1.8.3",
     "mypy>=1.14.1",
     "polars_legacy_hash",
     "pytest>=8.3.5",
