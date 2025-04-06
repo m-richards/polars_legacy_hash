@@ -35,8 +35,11 @@ jobs:
         uses: astral-sh/setup-uv@v5
 
       - name: Set up Rust
+        env:
+            SCCACHE_GHA_ENABLED: "true"
+            RUSTC_WRAPPER: "sccache"
         run: rustup show
-    #   - uses: mozilla-actions/sccache-action@v0.0.3
+      - uses: mozilla-actions/sccache-action@v0.0.9
       - run: uv sync
       - run: uv run maturin develop
       - run: uv run python -m pytest tests
