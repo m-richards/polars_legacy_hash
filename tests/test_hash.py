@@ -1,13 +1,11 @@
 import polars as pl
-import pytest
-from polars.exceptions import ComputeError
 from polars.testing import assert_frame_equal
 
 import polars_legacy_hash as plh  # noqa: F401
 
 
 def test_oldhash_int64():
-    df =pl.Series([-42],dtype=pl.Int64 ).to_frame("test")
+    df = pl.Series([-42], dtype=pl.Int64).to_frame("test")
     result = df.select(plh.oldhash(pl.col("test")))
     print(df)
     print(result)
@@ -21,8 +19,9 @@ def test_oldhash_int64():
 
     assert_frame_equal(result, expected)
 
+
 def test_oldhash_int32():
-    df =pl.Series([-42],dtype=pl.Int32 ).to_frame("test")
+    df = pl.Series([-42], dtype=pl.Int32).to_frame("test")
     result = df.select(plh.oldhash(pl.col("test")))
     print(df)
     print(result)
