@@ -36,18 +36,13 @@ jobs:
 
       - name: Set up Rust
         run: rustup show
-      - uses: mozilla-actions/sccache-action@v0.0.3
+    #   - uses: mozilla-actions/sccache-action@v0.0.3
       - run: uv sync
       - run: uv run maturin develop
-        working-directory: polars_legacy_hash
       - run: uv run python -m pytest tests
-        working-directory: polars_legacy_hash
       - run: uv run python -m mypy polars_legacy_hash
-        working-directory: polars_legacy_hash
       - run: uv run python -m ruff check --diff .
-        working-directory: polars_legacy_hash
       - run: uv run python -m ruff format --check --diff
-        working-directory: polars_legacy_hash
 
 
   linux:
