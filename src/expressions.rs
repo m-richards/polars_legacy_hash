@@ -16,7 +16,7 @@ use std::hash::Hash;
 use ahash::RandomState;
 use polars_arrow::bitmap::utils::get_bit_unchecked;
 
-use crate::pl_legacy_hashing::vector_hasher::integer_vec_hash;
+use crate::pl_legacy_hashing::vector_hasher::{integer_vec_hash, series_to_hashes};
 
 
 // pub(crate) fn get_null_hash_value(random_state: &RandomState) -> u64 {
@@ -94,7 +94,7 @@ fn oldhash(inputs: &[Series]) -> PolarsResult<Series> {
     let s = inputs.get(0).expect("no series received");
 
             let rs = RandomState::with_seeds(0, 0, 0, 0);
-            let h:Vec<u64> = vec![];
+            let mut h:Vec<u64> = vec![];
             let ser_name: PlSmallStr = s.name().clone();
 
     match s.dtype() {
@@ -104,6 +104,15 @@ fn oldhash(inputs: &[Series]) -> PolarsResult<Series> {
         DataType::Int32 => integer_vec_hash_adapter(s.i32().unwrap(), rs, h, ser_name),
         DataType::UInt64 => integer_vec_hash_adapter(s.u64().unwrap(), rs, h, ser_name),
         DataType::UInt32 => integer_vec_hash_adapter(s.u32().unwrap(), rs, h, ser_name),
+        DataType::Struct(_) => {
+            // s.struct_() is a PolarsResult<StructChunked>,
+            // actual struct code is a SeriesWrap<StructChunked>
+            let struct_ = s.struct_().unwrap();
+            // struct_.into_series()
+
+            series_to_hashes(&struct_.fields_as_series(), Some(rs), &mut h)?;
+            Ok(UInt64Chunked::from_vec(ser_name, h).into_series()) 
+        }
         _ => Err(PolarsError::InvalidOperation(
             "wyhash only works on strings or binary data".into(),
         )),

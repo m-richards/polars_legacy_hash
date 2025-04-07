@@ -4,33 +4,26 @@ from polars.testing import assert_frame_equal
 import polars_legacy_hash as plh  # noqa: F401
 
 
-def test_oldhash_int64():
+
+
+
+
+def test_oldhash_int64(expected_int64_neg_42):
     df = pl.Series([-42], dtype=pl.Int64).to_frame("test")
     result = df.select(plh.oldhash(pl.col("test")))
-    print(df)
-    print(result)
-    # result = pl.select(pl.lit(42).nchash.oldhash())  # type: ignore
-
-    expected = pl.DataFrame(
-        [
-            pl.Series("test", [15244781726809025498], dtype=pl.UInt64),
-        ]
-    )
-
-    assert_frame_equal(result, expected)
+    assert_frame_equal(result, expected_int64_neg_42.to_frame())
 
 
-def test_oldhash_int32():
+def test_oldhash_int32(expected_int32_neg_42):
     df = pl.Series([-42], dtype=pl.Int32).to_frame("test")
     result = df.select(plh.oldhash(pl.col("test")))
-    print(df)
+    assert_frame_equal(result, expected_int32_neg_42.to_frame())
+
+
+def test_int_struct(raw_struct_df, expected_int_struct):
+    df = raw_struct_df
+    print(df.dtypes)
+    result = pl.select(plh.oldhash(df.to_struct("test")))
     print(result)
-    # result = pl.select(pl.lit(42).nchash.oldhash())  # type: ignore
 
-    expected = pl.DataFrame(
-        [
-            pl.Series("test", [17010062867703544896], dtype=pl.UInt64),
-        ]
-    )
-
-    assert_frame_equal(result, expected)
+    assert_frame_equal(result, expected_int_struct.to_frame())
