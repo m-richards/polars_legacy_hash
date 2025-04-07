@@ -498,20 +498,20 @@ impl VecHash for BooleanChunked {
 //     Ok((hashes, hasher_builder))
 // }
 //
-// pub(crate) fn series_to_hashes(
-//     keys: &[Series],
-//     build_hasher: Option<RandomState>,
-//     hashes: &mut Vec<u64>,
-// ) -> PolarsResult<RandomState> {
-//     let build_hasher = build_hasher.unwrap_or_default();
-//
-//     let mut iter = keys.iter();
-//     let first = iter.next().expect("at least one key");
-//     first.vec_hash(build_hasher.clone(), hashes)?;
-//
-//     for keys in iter {
-//         keys.vec_hash_combine(build_hasher.clone(), hashes)?;
-//     }
-//
-//     Ok(build_hasher)
-// }
+pub(crate) fn series_to_hashes(
+    keys: &[Series],
+    build_hasher: Option<RandomState>,
+    hashes: &mut Vec<u64>,
+) -> PolarsResult<RandomState> {
+    let build_hasher = build_hasher.unwrap_or_default();
+
+    let mut iter = keys.iter();
+    let first = iter.next().expect("at least one key");
+    first.vec_hash(build_hasher.clone(), hashes)?;
+
+    for keys in iter {
+        keys.vec_hash_combine(build_hasher.clone(), hashes)?;
+    }
+
+    Ok(build_hasher)
+}
