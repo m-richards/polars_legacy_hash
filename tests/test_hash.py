@@ -27,3 +27,12 @@ def test_int_struct(raw_struct_df, expected_int_struct):
     print(result)
 
     assert_frame_equal(result, expected_int_struct.to_frame())
+
+
+def test_int_struct_singular(raw_struct_df_singular, expected_int_struct_singular):
+    df = raw_struct_df_singular
+    print(df.dtypes)
+    result = pl.select(plh.oldhash(df.to_struct("test")))
+    print(result)
+
+    assert_frame_equal(result, expected_int_struct_singular.to_frame())

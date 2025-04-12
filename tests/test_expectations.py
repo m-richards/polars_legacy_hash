@@ -25,3 +25,13 @@ def test_old_polars_hash(expected_int64_neg_42,
 def test_int_struct(raw_struct_df, expected_int_struct):
     actual = raw_struct_df.to_struct("test").hash()
     assert_series_equal(expected_int_struct, actual)
+
+
+def test_int_struct2(raw_struct_df, expected_int_struct):
+    actual = raw_struct_df.hash_rows().rename("test")
+    assert_series_equal(expected_int_struct, actual)
+
+
+def test_int_struct_singular(raw_struct_df_singular, expected_int_struct_singular):
+    actual = raw_struct_df_singular.to_struct("test").hash()
+    assert_series_equal(expected_int_struct_singular, actual)

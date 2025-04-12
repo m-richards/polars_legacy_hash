@@ -77,7 +77,7 @@ use crate::pl_legacy_hashing::vector_hasher::{integer_vec_hash, series_to_hashes
 //     insert_null_hash(ca.chunks(), random_state, buf)
 // }
 
-fn integer_vec_hash_adapter<T>(ca: &ChunkedArray<T>, random_state: RandomState, mut buf: Vec<u64>, name: PlSmallStr) -> PolarsResult<Series>
+fn integer_vec_hash_adapter<T>(ca: &ChunkedArray<T>, random_state: RandomState, mut buf: Vec<u64>, name: &str) -> PolarsResult<Series>
 where
     T: PolarsIntegerType,
     T::Native: Hash,
@@ -95,7 +95,7 @@ fn oldhash(inputs: &[Series]) -> PolarsResult<Series> {
 
             let rs = RandomState::with_seeds(0, 0, 0, 0);
             let mut h:Vec<u64> = vec![];
-            let ser_name: PlSmallStr = s.name().clone();
+            let ser_name: &str = s.name().clone();
 
     match s.dtype() {
 
@@ -110,8 +110,8 @@ fn oldhash(inputs: &[Series]) -> PolarsResult<Series> {
             let struct_ = s.struct_().unwrap();
             // struct_.into_series()
 
-            series_to_hashes(&struct_.fields_as_series(), Some(rs), &mut h)?;
-            Ok(UInt64Chunked::from_vec(ser_name, h).into_series()) 
+            series_to_hashes(&struct_.fields(), Some(rs).clone(), &mut h)?;
+            Ok(UInt64Chunked::from_vec(& ser_name, h).into_series()) 
         }
         _ => Err(PolarsError::InvalidOperation(
             "wyhash only works on strings or binary data".into(),
