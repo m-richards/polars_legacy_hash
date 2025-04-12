@@ -1,20 +1,10 @@
-use polars::{
-    chunked_array::ops::arity::{
-        try_binary_elementwise, try_ternary_elementwise, unary_elementwise,
-    },
-    prelude::*,
-};
+use polars::prelude::*;
 
-use polars::datatypes::{
-    DataType::{Float64, String, Struct},
-    Field,
-};
 use pyo3_polars::derive::polars_expr;
 
 
 use std::hash::Hash;
 use ahash::RandomState;
-use polars_arrow::bitmap::utils::get_bit_unchecked;
 
 use crate::pl_legacy_hashing::vector_hasher::{integer_vec_hash, series_to_hashes};
 
@@ -95,7 +85,7 @@ fn oldhash(inputs: &[Series]) -> PolarsResult<Series> {
 
             let rs = RandomState::with_seeds(0, 0, 0, 0);
             let mut h:Vec<u64> = vec![];
-            let ser_name: &str = s.name().clone();
+            let ser_name: &str = s.name();
 
     match s.dtype() {
 

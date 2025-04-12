@@ -1,12 +1,11 @@
 pub(crate) mod vector_hasher;
 
-use std::hash::{BuildHasherDefault, Hash, Hasher};
+use std::hash::Hash;
 
 use ahash::RandomState;
 // pub use identity::*;
 // pub use vector_hasher::*;
 
-use polars::prelude::*;
 
 // hash combine from c++' boost lib
 #[inline]
