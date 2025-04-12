@@ -4,10 +4,6 @@ from polars.testing import assert_frame_equal
 import polars_legacy_hash as plh  # noqa: F401
 
 
-
-
-
-
 def test_oldhash_int64(expected_int64_neg_42):
     df = pl.Series([-42], dtype=pl.Int64).to_frame("test")
     result = df.select(plh.oldhash(pl.col("test")))
