@@ -25,6 +25,7 @@ jobs:
     strategy:
       matrix:
         target: [ x86_64 ]
+        polars_version: ["0.19.10", "1.0.1", "1.5"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
@@ -41,6 +42,7 @@ jobs:
         run: rustup show
       - uses: mozilla-actions/sccache-action@v0.0.9
       - run: uv sync
+      - run: uv pip install polars==${{ matrix.polars_version }}
       - run: uv run maturin develop
       - run: uv run python -m pytest tests
       - run: uv run python -m mypy polars_legacy_hash
