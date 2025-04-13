@@ -131,25 +131,25 @@ jobs:
           name: wheels-${{ runner.os }}-${{ strategy.job-index }}-sdist
           path: dist
 
-    release:
-      name: Release
-      runs-on: ubuntu-latest
-      if: "startsWith(github.ref, 'refs/tags/')"
-      needs: [ linux_tests, linux, macos, windows, sdist ]
-      steps:
-        - name: Download all the dists
-          uses: actions/download-artifact@v4
-          with:
-              pattern: wheels*
-              merge-multiple: true
-
-        - name: Publish to PyPI
-          uses: PyO3/maturin-action@v1
-          env:
-            MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-          with:
-            command: upload
-            args: --non-interactive --skip-existing *
+#    release:
+#      name: Release
+#      runs-on: ubuntu-latest
+#      if: "startsWith(github.ref, 'refs/tags/')"
+#      needs: [ linux_tests, linux, macos, windows, sdist ]
+#      steps:
+#        - name: Download all the dists
+#          uses: actions/download-artifact@v4
+#          with:
+#              pattern: wheels*
+#              merge-multiple: true
+#
+#        - name: Publish to PyPI
+#          uses: PyO3/maturin-action@v1
+#          env:
+#            MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+#          with:
+#            command: upload
+#            args: --non-interactive --skip-existing *
 
 
 # https://github.com/nikpau/pytsa/commit/6947130ea42f2d76f8345256cf309baac19ce10b
