@@ -25,9 +25,9 @@ if Version(pl.__version__) >= Version("0.20.16"):
             is_elementwise=True,
         )
 else:
-    from polars.utils.udfs import _get_shared_lib_location
+    from polars.utils.udfs import _get_shared_lib_location # noqa [import-not-found]
 
-    from polars.type_aliases import IntoExpr, PolarsDataType
+    from polars.type_aliases import PolarsDataType # noqa [import-not-found]
 
 
     def parse_into_expr(
