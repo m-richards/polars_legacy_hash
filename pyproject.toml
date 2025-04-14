@@ -6,7 +6,8 @@ build-backend = "maturin"
 name = "polars_legacy_hash"
 requires-python = ">=3.8"
 dependencies = [
-  "polars>=1.5.0",
+    "polars>=1.5.0",
+    "packaging"
 ]
 version = "0.0.2" # TODO make dynamic?
 classifiers = [
