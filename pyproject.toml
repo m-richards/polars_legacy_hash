@@ -25,6 +25,7 @@ readme = "README.md"
 module-name = "polars_legacy_hash._internal"
 
 [tool.ruff]
+line-length = 120
 src = ["polars_legacy_hash", "tests"]
 
 [tool.ruff.lint]

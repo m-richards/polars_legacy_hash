@@ -4,17 +4,11 @@ from polars.testing import assert_series_equal
 
 SOURCE_POLARS_VERSION = pl.__version__ == "0.20.10"
 if not SOURCE_POLARS_VERSION:
-    pytest.skip(
-        "module only run to confirm test assertions are good", allow_module_level=True
-    )
-old_polars_only = pytest.mark.skipif(
-    not SOURCE_POLARS_VERSION, reason="Checking old polars behaviour"
-)
+    pytest.skip("module only run to confirm test assertions are good", allow_module_level=True)
+old_polars_only = pytest.mark.skipif(not SOURCE_POLARS_VERSION, reason="Checking old polars behaviour")
 
 
-def test_old_polars_hash(
-    expected_int64_neg_42, expected_int32_neg_42, expected_uint64_42, expected_uint32_42
-):
+def test_old_polars_hash(expected_int64_neg_42, expected_int32_neg_42, expected_uint64_42, expected_uint32_42):
     actual = pl.Series("test", [-42], dtype=pl.Int64).hash()
     assert_series_equal(expected_int64_neg_42, actual)
     actual = pl.Series("test", [-42], dtype=pl.Int32).hash()

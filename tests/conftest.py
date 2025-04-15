@@ -41,6 +41,4 @@ def expected_int_struct():
 
 @fixture
 def expected_int_struct_singular():
-    return pl.Series(
-        "test", [15244781726809025498, 4321950247308341530], dtype=pl.UInt64
-    )
+    return pl.Series("test", [15244781726809025498, 4321950247308341530], dtype=pl.UInt64)

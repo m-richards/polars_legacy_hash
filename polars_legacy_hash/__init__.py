@@ -5,7 +5,6 @@ from pathlib import Path
 import polars as pl
 from packaging.version import Version
 
-
 try:
     from polars._typing import IntoExpr
 except ImportError:
@@ -25,9 +24,8 @@ if Version(pl.__version__) >= Version("0.20.16"):
             is_elementwise=True,
         )
 else:
-    from polars.utils.udfs import _get_shared_lib_location  # type:ignore[import-not-found]
-
     from polars.type_aliases import PolarsDataType  # type:ignore[import-not-found]
+    from polars.utils.udfs import _get_shared_lib_location  # type:ignore[import-not-found]
 
     def parse_into_expr(
         expr: IntoExpr,
