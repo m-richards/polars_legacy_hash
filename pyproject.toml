@@ -6,9 +6,10 @@ build-backend = "maturin"
 name = "polars_legacy_hash"
 requires-python = ">=3.8"
 dependencies = [
-  "polars>=1.5.0",
+    "polars>=0.20.10",
+    "packaging"
 ]
-version = "0.0.1" # TODO make dynamic?
+version = "0.0.2" # TODO make dynamic?
 classifiers = [
   "Programming Language :: Rust",
   "Programming Language :: Python :: Implementation :: CPython",
@@ -24,6 +25,7 @@ readme = "README.md"
 module-name = "polars_legacy_hash._internal"
 
 [tool.ruff]
+line-length = 120
 src = ["polars_legacy_hash", "tests"]
 
 [tool.ruff.lint]
@@ -40,6 +42,7 @@ polars-hash = { workspace = true }
 
 [dependency-groups]
 dev = [
+    "maturin>=1.8.3",
     "mypy>=1.14.1",
     "polars_legacy_hash",
     "pytest>=8.3.5",
