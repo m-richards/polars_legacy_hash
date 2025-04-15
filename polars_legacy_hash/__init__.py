@@ -25,17 +25,16 @@ if Version(pl.__version__) >= Version("0.20.16"):
             is_elementwise=True,
         )
 else:
-    from polars.utils.udfs import _get_shared_lib_location # type:ignore[import-not-found]
+    from polars.utils.udfs import _get_shared_lib_location  # type:ignore[import-not-found]
 
-    from polars.type_aliases import PolarsDataType # type:ignore[import-not-found]
-
+    from polars.type_aliases import PolarsDataType  # type:ignore[import-not-found]
 
     def parse_into_expr(
-            expr: IntoExpr,
-            *,
-            str_as_lit: bool = False,
-            list_as_lit: bool = True,
-            dtype: PolarsDataType | None = None,
+        expr: IntoExpr,
+        *,
+        str_as_lit: bool = False,
+        list_as_lit: bool = True,
+        dtype: PolarsDataType | None = None,
     ) -> pl.Expr:
         """Parse a single input into an expression."""
         if isinstance(expr, pl.Expr):
@@ -50,7 +49,6 @@ else:
 
     lib = _get_shared_lib_location(__file__)
 
-
     def oldhash(expr: IntoExpr) -> pl.Expr:
         """Polars 0.20.10 hash."""
         expr = parse_into_expr(expr)
@@ -60,7 +58,6 @@ else:
             args=[],
             is_elementwise=True,
         )
-
 
 
 __all__ = ["oldhash"]
