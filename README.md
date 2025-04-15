@@ -3,7 +3,7 @@
 For a specific project, I needed to preserve the hashing behaviour of polars 0.20.10 (or the underlying ahash 0.8.7),
 whilst also wanting to upgrade polars itself. 
 
-For now this plugin specifically caters to 0.20.10, but in principle could be generalised. See also [Polars Hash](https://github.com/ion-elgreco/polars-hash) which is a more general solution to this, which is coupled to a specific point in time in the history of polars. 
+For now this plugin specifically caters to 0.20.10, but in principle could be generalised. See also [Polars Hash](https://github.com/ion-elgreco/polars-hash) which is a more general solution to this, which is coupled to a specific point in time in the history of polars. If there ever comes a use case for this, I expect to move to some version of versioning akin to stub libraries e.g. 0.20.10.20250415 and deploy these from seperate branches to avoid having to bundle multiple polars binaries into the same wheel.
 
 ## Usage
 ```python
