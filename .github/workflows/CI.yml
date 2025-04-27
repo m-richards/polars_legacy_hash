@@ -119,6 +119,9 @@ jobs:
 
   sdist:
     runs-on: ubuntu-latest
+    strategy:
+        matrix:
+          target: [ x86_64 ]
     steps:
       - uses: actions/checkout@v4
       - name: Build sdist
@@ -149,8 +152,6 @@ jobs:
           path: dist/
       - name: Debug - show raw dist contents
         run: |
-#              echo "=== Files in dist/ ==="
-#              dir dist /b /s
               echo "=== Powershell recursive listing ==="
               powershell -Command "Get-ChildItem -LiteralPath 'dist' -Recurse | Select-Object FullName, Length | Format-Table"
 
