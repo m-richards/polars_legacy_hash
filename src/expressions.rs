@@ -5,7 +5,7 @@ use pyo3_polars::{derive::polars_expr};
 use ahash::RandomState;
 
 #[polars_expr(output_type=UInt64)]
-fn oldhash(inputs: &[Series]) -> PolarsResult<Series> {
+fn legacy_hash(inputs: &[Series]) -> PolarsResult<Series> {
     eprintln!("test ouytput1");
     let s = inputs.get(0).expect("no series received");
     // let s = Series::new("foo", &[1, 2, 3]).cast(&Int8).unwrap();

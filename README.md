@@ -27,7 +27,7 @@ print(f"Hashing with polars={pl.__version__} directly:")
 s = pl.Series([42])
 print(s.hash().item())
 print("Using polars_legacy_hash:")
-result = s.to_frame("test").select(plh.oldhash(pl.col("test"))).to_series()
+result = s.to_frame("test").select(plh.legacy_hash(pl.col("test"))).to_series()
 print(result.item())
 ```
 Running this with `uv run --script examples/polars_0.20.10.py` produces this:
