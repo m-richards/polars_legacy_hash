@@ -169,7 +169,7 @@ jobs:
       - name: Install built wheel
         shell: bash
         run: |
-          uv pip install dist/wheels-${{ runner.os }}-${{ matrix.architecture }}/$(ls dist)
+          uv pip install dist/wheels-Windows-${{ matrix.architecture }}/*.whl
       - name: Run tests
         # TODO make this cross platform
         run: |
