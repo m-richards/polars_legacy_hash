@@ -6,7 +6,7 @@ build-backend = "maturin"
 name = "polars_legacy_hash"
 requires-python = ">=3.8"
 dependencies = [
-    # "polars>=0.20.10",
+     "polars>=0.20.10",
     # or polars_u64_idx
     "packaging"
 ]
