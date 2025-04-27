@@ -172,7 +172,7 @@ jobs:
         shell: bash
         run: |
           uv pip install dist/wheels-${{ runner.os }}-${{ matrix.architecture }}/*.whl
-      - run: uv run python -c "import polars_legacy_hash"
+      - run: uv run --no-sync python -c "import polars_legacy_hash"
       - name: Run tests
         run: |
           uv run --no-sync pytest tests
