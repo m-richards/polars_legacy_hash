@@ -150,26 +150,27 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Download built wheels
-        uses: actions/download-artifact@v4
-        with:
-          pattern: wheels-Windows-${{ matrix.architecture }}
-          path: dist/
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.architecture }}
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
+
+      - name: Download built wheels
+        uses: actions/download-artifact@v4
+        with:
+          pattern: wheels-${{ runner.os }}-${{ matrix.architecture }}
+          path: dist/
+
       - run: uv venv
       - run: uv pip install pytest polars
       - name: Install built wheel
         shell: bash
         run: |
-          uv pip install dist/wheels-Windows-${{ matrix.architecture }}/*.whl
+          uv pip install dist/wheels-${{ runner.os }}-${{ matrix.architecture }}/*.whl
       - name: Run tests
         # TODO make this cross platform
         run: |
