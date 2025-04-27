@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.8"
 
 [[package]]
@@ -143,28 +144,32 @@ wheels = [
 
 [[package]]
 name = "polars-legacy-hash"
-version = "0.0.1"
 source = { editable = "." }
 dependencies = [
+    { name = "packaging" },
     { name = "polars" },
 ]
 
-[package.dependency-groups]
+[package.dev-dependencies]
 dev = [
     { name = "maturin" },
     { name = "mypy" },
+    { name = "polars-legacy-hash" },
     { name = "pytest" },
     { name = "ruff" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "polars", specifier = ">=1.5.0" }]
+requires-dist = [
+    { name = "packaging" },
+    { name = "polars", specifier = ">=0.20.10" },
+]
 
-[package.metadata.dependency-groups]
+[package.metadata.requires-dev]
 dev = [
     { name = "maturin", specifier = ">=1.8.3" },
     { name = "mypy", specifier = ">=1.14.1" },
-    { name = "polars-legacy-hash" },
+    { name = "polars-legacy-hash", editable = "." },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "ruff", specifier = ">=0.11.4" },
 ]

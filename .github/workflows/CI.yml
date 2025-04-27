@@ -49,7 +49,7 @@ jobs:
         if: matrix.polars_version == 'polars'
 
 
-  linux:
+  build_wheels_linux:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -70,10 +70,10 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ runner.os }}-${{ strategy.job-index }}
+          name: wheels-${{ runner.os }}-${{ matrix.target }}
           path: dist
 
-  windows:
+  build_wheels_windows:
     runs-on: windows-latest
     strategy:
       matrix:
@@ -93,9 +93,9 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ runner.os }}-${{ strategy.job-index }}
+          name: wheels-${{ runner.os }}-${{ matrix.target }}
           path: dist
-  macos:
+  build_wheels_macos:
     runs-on: macos-latest
     strategy:
       matrix:
@@ -114,11 +114,14 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ runner.os }}-${{ strategy.job-index }}
+          name: wheels-${{ runner.os }}-${{ matrix.target }}
           path: dist
 
-  sdist:
+  build_sdist:
     runs-on: ubuntu-latest
+    strategy:
+        matrix:
+          target: [ x86_64 ]
     steps:
       - uses: actions/checkout@v4
       - name: Build sdist
@@ -129,14 +132,56 @@ jobs:
       - name: Upload sdist
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ runner.os }}-${{ strategy.job-index }}-sdist
+          name: wheels-${{ runner.os }}-${{ matrix.target }}-sdist
           path: dist
+
+  test_wheels:
+    name: Test wheels
+
+    needs: [build_wheels_windows, build_wheels_linux]
+    strategy:
+      matrix:
+        python-version: [ '3.10' ]
+        include:
+          - os: windows-latest
+            architecture: x64
+#          - os: ubuntu-latest
+#            architecture: x86_64
+
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.architecture }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Download built wheels
+        uses: actions/download-artifact@v4
+        with:
+          pattern: wheels-${{ runner.os }}-${{ matrix.architecture }}
+          path: dist/
+
+      - run: uv venv
+      - run: uv pip install pytest polars
+      - name: Install built wheel
+        shell: bash
+        run: |
+          uv pip install dist/wheels-${{ runner.os }}-${{ matrix.architecture }}/*.whl
+      - run: uv run python -c "import polars_legacy_hash"
+      - name: Run tests
+        run: |
+          uv run --no-sync pytest tests
 
   release:
     name: Release
     runs-on: ubuntu-latest
     if: "startsWith(github.ref, 'refs/tags/')"
-    needs: [ linux_tests, linux, macos, windows, sdist ]
+    needs: [ linux_tests, build_wheels_linux, build_wheels_macos, build_wheels_windows, build_sdist, test_wheels ]
     steps:
       - name: Download all the dists
         uses: actions/download-artifact@v4
@@ -151,7 +196,3 @@ jobs:
         with:
           command: upload
           args: --non-interactive --skip-existing *
-
-
-# https://github.com/nikpau/pytsa/commit/6947130ea42f2d76f8345256cf309baac19ce10b
-# https://github.com/nikpau/pytsa/commit/f64ee735d8612028c040bde203c5a60dde8a15cd

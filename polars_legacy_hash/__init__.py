@@ -15,11 +15,11 @@ from polars_legacy_hash._internal import __version__ as __version__
 if Version(pl.__version__) >= Version("0.20.16"):
     from polars.plugins import register_plugin_function
 
-    def oldhash(expr: IntoExpr) -> pl.Expr:
+    def legacy_hash(expr: IntoExpr) -> pl.Expr:
         """Polars 0.20.10 hash."""
         return register_plugin_function(
             plugin_path=Path(__file__).parent,
-            function_name="oldhash",
+            function_name="legacy_hash",
             args=expr,
             is_elementwise=True,
         )
@@ -47,15 +47,15 @@ else:
 
     lib = _get_shared_lib_location(__file__)
 
-    def oldhash(expr: IntoExpr) -> pl.Expr:
+    def legacy_hash(expr: IntoExpr) -> pl.Expr:
         """Polars 0.20.10 hash."""
         expr = parse_into_expr(expr)
         return expr.register_plugin(
             lib=lib,
-            symbol="oldhash",
+            symbol="legacy_hash",
             args=[],
             is_elementwise=True,
         )
 
 
-__all__ = ["oldhash"]
+__all__ = ["legacy_hash"]
