@@ -35,9 +35,9 @@ extend-select = ["I"]
 known-first-party = ["polars_legacy_hash"]
 
 [tool.uv]
-cache-keys = [{ file = "pyproject.toml" }, { file = "src/**/*.rs" }, { file = "Cargo.toml" },{ file = "Cargo.lock" },]
+cache-keys = [{ file = "pyproject.toml" }, { file = "src/**/*.rs" }, { file = "Cargo.toml" },{ file = "Cargo.lock" }, { file = "target/**"}, {file = "polars_legacy_hash/**/*.pyd"}]
 [tool.uv.sources]
-polars-hash = { workspace = true }
+polars-legacy-hash = { workspace = true }
 
 
 [dependency-groups]

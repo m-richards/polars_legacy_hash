@@ -137,18 +137,19 @@ jobs:
 
   windows_wheel_tests:
     name: Test Windows wheels
-    runs-on: windows-latest
+
     needs: windows
     strategy:
       # you can re-use the same matrix if you need to test across multiple arches
       matrix:
         python-version: [ '3.10' ]
         architecture: [ x64 ]
+    runs-on: windows-latest
     steps:
       - name: Download built wheels
         uses: actions/download-artifact@v4
         with:
-          pattern: wheels-Windows-*
+          pattern: wheels-Windows-${{ matrix.architecture }}
           path: dist/
       - name: Debug - show raw dist contents
         run: |
@@ -163,7 +164,7 @@ jobs:
       - name: Install built wheel
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          pip install dist/*win_amd64.whl
+          pip install dist/wheels-Windows-${{ matrix.architecture }}/*.whl
       - name: Run tests
         run: |
           .venv/bin/python -m pytest tests
