@@ -49,7 +49,7 @@ jobs:
         if: matrix.polars_version == 'polars'
 
 
-  linux:
+  build_wheels_linux:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -73,7 +73,7 @@ jobs:
           name: wheels-${{ runner.os }}-${{ matrix.target }}
           path: dist
 
-  windows:
+  build_wheels_windows:
     runs-on: windows-latest
     strategy:
       matrix:
@@ -95,7 +95,7 @@ jobs:
         with:
           name: wheels-${{ runner.os }}-${{ matrix.target }}
           path: dist
-  macos:
+  build_wheels_macos:
     runs-on: macos-latest
     strategy:
       matrix:
@@ -117,7 +117,7 @@ jobs:
           name: wheels-${{ runner.os }}-${{ matrix.target }}
           path: dist
 
-  sdist:
+  build_sdist:
     runs-on: ubuntu-latest
     strategy:
         matrix:
@@ -135,12 +135,11 @@ jobs:
           name: wheels-${{ runner.os }}-${{ matrix.target }}-sdist
           path: dist
 
-  windows_wheel_tests:
-    name: Test Windows wheels
+  test_wheels:
+    name: Test wheels
 
-    needs: [windows, linux]
+    needs: [build_wheels_windows, build_wheels_linux]
     strategy:
-      # you can re-use the same matrix if you need to test across multiple arches
       matrix:
         python-version: [ '3.10' ]
         include:
@@ -154,32 +153,32 @@ jobs:
       - name: Download built wheels
         uses: actions/download-artifact@v4
         with:
-          pattern: wheels-Windows-${{ matrix.architecture }}
+          pattern: wheels-${{ matrix.os }}-${{ matrix.architecture }}
           path: dist/
-      - name: Debug - show raw dist contents
-        run: |
-              echo "=== Powershell recursive listing ==="
-              powershell -Command "Get-ChildItem -LiteralPath 'dist' -Recurse | Select-Object FullName, Length | Format-Table"
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
           architecture: ${{ matrix.architecture }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - run: uv sync
       - name: Install built wheel
         shell: bash
         run: |
-          python -m pip install --upgrade pip setuptools wheel
-          pip install dist/wheels-${{ runner.os }}-${{ matrix.architecture }}/*.whl
+          uv pip install dist/wheels-${{ runner.os }}-${{ matrix.architecture }}/*.whl
       - name: Run tests
+        # TODO make this cross platform
         run: |
-          .venv/bin/python -m pytest tests
+          .venv/Scripts/python.exe -m pytest tests
 
   release:
     name: Release
     runs-on: ubuntu-latest
     if: "startsWith(github.ref, 'refs/tags/')"
-    needs: [ linux_tests, linux, macos, windows, sdist ]
+    needs: [ linux_tests, build_wheels_linux, build_wheels_macos, build_wheels_windows, build_sdist, test_wheels ]
     steps:
       - name: Download all the dists
         uses: actions/download-artifact@v4
@@ -194,7 +193,3 @@ jobs:
         with:
           command: upload
           args: --non-interactive --skip-existing *
-
-
-# https://github.com/nikpau/pytsa/commit/6947130ea42f2d76f8345256cf309baac19ce10b
-# https://github.com/nikpau/pytsa/commit/f64ee735d8612028c040bde203c5a60dde8a15cd
