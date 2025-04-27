@@ -19,7 +19,7 @@ fn oldhash(inputs: &[Series]) -> PolarsResult<Series> {
 
     match x {
         Ok(_) => Ok(UInt64Chunked::from_vec(&ser_name, h).into_series()),
-        
+
         Err(res) => Err(res),
     }
 }
