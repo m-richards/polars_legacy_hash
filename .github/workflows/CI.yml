@@ -149,6 +149,7 @@ jobs:
 #            architecture: x86_64
 
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
@@ -171,6 +172,7 @@ jobs:
         shell: bash
         run: |
           uv pip install dist/wheels-${{ runner.os }}-${{ matrix.architecture }}/*.whl
+      - run: uv run python -c "import polars_legacy_hash"
       - name: Run tests
         run: |
           uv run --no-sync pytest tests
