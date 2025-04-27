@@ -45,4 +45,4 @@ def test_int_dtype_struct(int_dtype_struct, expected_int_dtype_struct):
     # https://github.com/m-richards/polars_legacy_hash/issues/3
 
     result = pl.select(plh.oldhash(int_dtype_struct.to_struct("test")))
-    assert_frame_equal(result, expected_int_dtype_struct)
+    assert_frame_equal(result, expected_int_dtype_struct.to_frame())

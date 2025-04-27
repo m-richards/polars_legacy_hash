@@ -147,6 +147,13 @@ jobs:
         with:
           pattern: wheels-Windows-*
           path: dist/
+      - name: Debug - show raw dist contents
+        run: |
+              echo "=== Files in dist/ ==="
+              dir dist /b /s
+              echo "=== Powershell recursive listing ==="
+              powershell -Command "Get-ChildItem -LiteralPath 'dist' -Recurse | Select-Object FullName, Length | Format-Table"
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
