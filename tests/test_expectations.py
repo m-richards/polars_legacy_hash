@@ -18,6 +18,11 @@ def test_old_polars_hash(expected_int64_neg_42, expected_int32_neg_42, expected_
     actual = pl.Series("test", [42], dtype=pl.UInt32).hash()
     assert_series_equal(expected_uint32_42, actual)
 
+def test_int8(expected_int8_42):
+    actual = pl.Series("test", [42], dtype=pl.Int8).hash()
+    assert_series_equal(expected_int8_42, actual)
+
+
 
 def test_int_struct(raw_struct_df, expected_int_struct):
     actual = raw_struct_df.to_struct("test").hash()

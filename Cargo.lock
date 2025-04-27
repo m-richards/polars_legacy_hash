@@ -1071,7 +1071,6 @@ dependencies = [
  "pyo3",
  "pyo3-polars",
  "serde",
- "xxhash-rust",
 ]
 
 [[package]]

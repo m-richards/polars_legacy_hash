@@ -4,7 +4,8 @@ For a specific project, I needed to preserve the hashing behaviour of polars 0.2
 whilst also wanting to upgrade polars itself. 
 
 For now this plugin specifically caters to 0.20.10, but in principle could be generalised. See also [Polars Hash](https://github.com/ion-elgreco/polars-hash) which is a more general solution to this, which is coupled to a specific point in time in the history of polars. If there ever comes a use case for this, I expect to move to some version of versioning akin to stub libraries e.g. 0.20.10.20250415 and deploy these from seperate branches to avoid having to bundle multiple polars binaries into the same wheel.
-
+## Installation
+`pip install polars_legacy_hash` in your virtualenv. Note that you'll need to install polars seperately. This package doesn't depend on polars explicitly, so that if you use e.g. `polars-u64-idx` we won't pull in polars as well (TODO double check this works as intended)
 ## Usage
 ```python
 import polars as pl

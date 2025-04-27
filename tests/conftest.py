@@ -25,6 +25,11 @@ def expected_int32_neg_42():
 
 
 @fixture
+def expected_int8_42():
+    return pl.Series("test", [3146795401079207122], dtype=pl.UInt64)
+
+
+@fixture
 def expected_uint64_42():
     return pl.Series("test", [3146795401079207122], dtype=pl.UInt64)
 

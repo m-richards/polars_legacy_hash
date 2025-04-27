@@ -7,7 +7,7 @@ use pyo3::{pymodule, PyResult, Python};
 //
 // #[global_allocator]
 // static ALLOC: PolarsAllocator = PolarsAllocator::new();
-
+// TODO why inject the python in rust? two things to keep in sync?
 #[pymodule]
 fn _internal(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add("__version__", env!("CARGO_PKG_VERSION"))?;
