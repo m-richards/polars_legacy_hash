@@ -18,10 +18,10 @@ def test_old_polars_hash(expected_int64_neg_42, expected_int32_neg_42, expected_
     actual = pl.Series("test", [42], dtype=pl.UInt32).hash()
     assert_series_equal(expected_uint32_42, actual)
 
+
 def test_int8(expected_int8_42):
     actual = pl.Series("test", [42], dtype=pl.Int8).hash()
     assert_series_equal(expected_int8_42, actual)
-
 
 
 def test_int_struct(raw_struct_df, expected_int_struct):
@@ -38,7 +38,7 @@ def test_int_struct_singular(raw_struct_df_singular, expected_int_struct_singula
     actual = raw_struct_df_singular.to_struct("test").hash()
     assert_series_equal(expected_int_struct_singular, actual)
 
+
 def test_int_dtype_struct(int_dtype_struct, expected_int_dtype_struct):
     actual = int_dtype_struct.to_struct("test").hash()
     assert_series_equal(expected_int_dtype_struct, actual)
-
