@@ -172,9 +172,8 @@ jobs:
         run: |
           uv pip install dist/wheels-${{ runner.os }}-${{ matrix.architecture }}/*.whl
       - name: Run tests
-        # TODO make this cross platform
         run: |
-          .venv/Scripts/python.exe -m pytest tests
+          uv run --no-sync pytest tests
 
   release:
     name: Release
