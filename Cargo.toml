@@ -19,6 +19,7 @@ polars = { version = "=0.37.0", features = [
 #   "dtype-categorical",
   "dtype-struct",
     "dtype-array",
+    "bigidx"
     ] }
 polars-arrow = { version = "0.37.0" }
 pyo3 = { version = "0.20", features = ["extension-module", "abi3-py38"]  }

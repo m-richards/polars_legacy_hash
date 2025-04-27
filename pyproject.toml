@@ -6,7 +6,8 @@ build-backend = "maturin"
 name = "polars_legacy_hash"
 requires-python = ">=3.8"
 dependencies = [
-    "polars>=0.20.10",
+    # "polars>=0.20.10",
+    # or polars_u64_idx
     "packaging"
 ]
 dynamic = ["version"]
@@ -42,6 +43,7 @@ polars-legacy-hash = { workspace = true }
 
 [dependency-groups]
 dev = [
+    "polars_u64_idx>=0.20.0"
     "maturin>=1.8.3",
     "mypy>=1.14.1",
     "polars_legacy_hash",
