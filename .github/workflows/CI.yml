@@ -164,7 +164,8 @@ jobs:
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
-      - run: uv sync
+      - run: uv venv
+      - run: uv pip install pytest polars
       - name: Install built wheel
         shell: bash
         run: |

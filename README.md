@@ -10,15 +10,51 @@ For now this plugin specifically caters to 0.20.10, but in principle could be ge
 
 
 ## Usage
+The best way to explain what this package does it to demonstrate:
 ```python
+# /// script
+# requires-python = ">=3.8"
+# dependencies = [
+#     "polars==0.20.10",
+#     "polars_legacy_hash",
+# ]
+# ///
 import polars as pl
+
 import polars_legacy_hash as plh
-df = pl.DataFrame({"a": [-42, 13], "b": [-42, 0]})
-result = pl.select(plh.oldhash(df.to_struct("test")))
+
+print(f"Hashing with polars={pl.__version__} directly:")
+s = pl.Series([42])
+print(s.hash().item())
+print("Using polars_legacy_hash:")
+result = s.to_frame("test").select(plh.oldhash(pl.col("test"))).to_series()
+print(result.item())
+```
+Running this with `uv run --script examples/polars_0.20.10.py` produces this:
+```
+Hashing with polars=0.20.10 directly:
+3146795401079207122
+Using polars_legacy_hash:
+3146795401079207122
+```
+Running the analogous `uv run --script examples/polars_1.27.1.py` we get:
+
+
 
 ```
+Hashing with polars=1.27.1 directly (not consistent!):
+16588070273457376249
+Using polars_legacy_hash:
+3146795401079207122
+```
+i.e. we get the same consistent output, in spite of the polars version change.
+
 For correctness checking, the CI runs `test_expectations.py` under polars 0.20.10 to
-confirm that the test values in the fixtures (defined in tests/conftest.py) are consistent with polars itself.
+confirm that the test values in the fixtures (defined in tests/conftest.py) are consistent with polars itself from that version.
+
+
+### Known limitations
+- No support for polars categorical
 
 
 ## Development
