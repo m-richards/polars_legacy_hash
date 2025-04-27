@@ -37,3 +37,8 @@ def test_int_struct2(raw_struct_df, expected_int_struct):
 def test_int_struct_singular(raw_struct_df_singular, expected_int_struct_singular):
     actual = raw_struct_df_singular.to_struct("test").hash()
     assert_series_equal(expected_int_struct_singular, actual)
+
+def test_int_dtype_struct(int_dtype_struct, expected_int_dtype_struct):
+    actual = int_dtype_struct.to_struct("test").hash()
+    assert_series_equal(expected_int_dtype_struct, actual)
+

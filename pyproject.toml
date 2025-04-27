@@ -9,7 +9,7 @@ dependencies = [
     "polars>=0.20.10",
     "packaging"
 ]
-version = "0.0.2" # TODO make dynamic?
+dynamic = ["version"]
 classifiers = [
   "Programming Language :: Rust",
   "Programming Language :: Python :: Implementation :: CPython",
