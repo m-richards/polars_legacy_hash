@@ -40,12 +40,13 @@ jobs:
       - run: uv run maturin develop
       - run: uv pip install ${{ matrix.polars_version }}
         # modified from the uv env state, invoke directly so uv doesn't re-sync
-      - run: .venv/bin/python -m pytest tests
-      - run: .venv/bin/python -m mypy polars_legacy_hash
+      - run: uv run --no-sync python -m pytest tests
+        # run linting only on the latest polars version
+      - run: uv run --no-sync python -m mypy polars_legacy_hash
         if: matrix.polars_version == 'polars'
-      - run: .venv/bin/python -m ruff check --diff .
+      - run: uv run --no-sync python -m ruff check --diff .
         if: matrix.polars_version == 'polars'
-      - run: .venv/bin/python -m ruff format --check --diff
+      - run: uv run --no-sync python -m ruff format --check --diff
         if: matrix.polars_version == 'polars'
 
 
