@@ -3,10 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 
 try:
-    import polars
+    import polars  # noqa: F401
 except ImportError as e:
-    raise ImportError("polars-legacy-hash requires polars or polars-u64-idx to be installed. Please "
-                      "install either of these directly") from e
+    raise ImportError(
+        "polars-legacy-hash requires polars or polars-u64-idx to be installed. Please install either of these directly"
+    ) from e
 
 import polars as pl
 from packaging.version import Version
@@ -17,6 +18,7 @@ except ImportError:
     from polars.type_aliases import IntoExpr  # type: ignore[no-redef] # noqa:I001
 
 from polars_legacy_hash._internal import __version__ as __version__
+
 if Version(pl.__version__) < Version("0.20.10"):
     raise ImportError("polars-legacy-hash requires a minimum of polars==0.20.10")
 
