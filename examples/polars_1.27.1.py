@@ -2,7 +2,7 @@
 # requires-python = ">=3.10"
 # dependencies = [
 #     "polars==1.27.1",
-#     "polars_legacy_hash<=0.0.4",
+#     "polars_legacy_hash>=0.0.4",
 # ]
 # ///
 
