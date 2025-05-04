@@ -19,10 +19,11 @@ except ImportError:
 
 from polars_legacy_hash._internal import __version__ as __version__
 
-if Version(pl.__version__) < Version("0.20.10"):
-    raise ImportError("polars-legacy-hash requires a minimum of polars==0.20.10")
+POLARS_VERSION = Version(pl.__version__)
+if POLARS_VERSION < Version("0.19.14"):
+    print("polars-legacy-hash requires a minimum of polars==0.19.14 (but is only tested in CI from 0.20.10)")
 
-elif Version(pl.__version__) >= Version("0.20.16"):
+if POLARS_VERSION >= Version("0.20.16"):
     from polars.plugins import register_plugin_function
 
     def legacy_hash(expr: IntoExpr) -> pl.Expr:

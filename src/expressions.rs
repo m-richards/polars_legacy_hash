@@ -6,16 +6,11 @@ use ahash::RandomState;
 
 #[polars_expr(output_type=UInt64)]
 fn legacy_hash(inputs: &[Series]) -> PolarsResult<Series> {
-    eprintln!("test ouytput1");
     let s = inputs.get(0).expect("no series received");
-    // let s = Series::new("foo", &[1, 2, 3]).cast(&Int8).unwrap();
-    println!("Series name: {}, dtype: {:?}", s.name(), s.dtype());
     let rs = RandomState::with_seeds(0, 0, 0, 0);
     let mut h: Vec<u64> = vec![];
     let ser_name: &str = s.name();
     let x = s.vec_hash(rs, &mut h);
-    eprintln!("test ouytput");
-    eprintln!("{:?}", x);
 
     match x {
         Ok(_) => Ok(UInt64Chunked::from_vec(&ser_name, h).into_series()),

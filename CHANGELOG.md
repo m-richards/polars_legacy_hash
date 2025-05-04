@@ -1,3 +1,10 @@
+## Version 0.0.5
+- Cleanup debug logging
+- Relax overly tight minimum bound
+
+## Version 0.0.4
+- Test explicitly against polars-u64-idx
+- Remove explicit dependency on polars, to avoid side by side issues with polars-u64-idx
 
 ## Version 0.0.3
 - bigidx compile flag for large dataframes
