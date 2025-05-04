@@ -2,7 +2,7 @@
 # requires-python = ">=3.8"
 # dependencies = [
 #     "polars==0.20.10",
-#     "polars_legacy_hash",
+#     "polars_legacy_hash>=0.0.4",
 # ]
 # ///
 import polars as pl
@@ -10,7 +10,7 @@ import polars as pl
 import polars_legacy_hash as plh
 
 print(f"Hashing with polars={pl.__version__} directly:")
-s = pl.Series(range)
+s = pl.Series([42])
 print(s.hash().item())
 print("Using polars_legacy_hash:")
 result = s.to_frame("test").select(plh.legacy_hash(pl.col("test"))).to_series()
